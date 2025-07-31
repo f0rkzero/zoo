@@ -263,7 +263,71 @@ function Library:new()
     Container.BorderSizePixel = 0
     Container.ClipsDescendants = true
     Container.Position = UDim2.new(0.5, 0, 0.5, 0)
+-- 🌙 Moondiety Toggle Icon
+local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
 
+-- Create floating toggle icon GUI
+local toggleGui = Instance.new("ScreenGui")
+toggleGui.Name = "MoondietyIconGUI"
+toggleGui.ResetOnSpawn = false
+toggleGui.IgnoreGuiInset = true
+toggleGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+toggleGui.Parent = player:WaitForChild("PlayerGui")
+
+local toggleFrame = Instance.new("Frame")
+toggleFrame.Size = UDim2.new(0, 50, 0, 50)
+toggleFrame.Position = UDim2.new(0, 20, 1, -70)
+toggleFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+toggleFrame.BorderSizePixel = 0
+toggleFrame.Active = true
+toggleFrame.Draggable = true
+toggleFrame.Parent = toggleGui
+
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(1, 0)
+frameCorner.Parent = toggleFrame
+
+local icon = Instance.new("ImageLabel")
+icon.Size = UDim2.new(0, 40, 0, 40)
+icon.Position = UDim2.new(0, 5, 0, 5)
+icon.BackgroundTransparency = 1
+icon.Image = "rbxassetid://133495621202705"
+icon.ZIndex = 2
+icon.Parent = toggleFrame
+
+local iconCorner = Instance.new("UICorner")
+iconCorner.CornerRadius = UDim.new(1, 0)
+iconCorner.Parent = icon
+
+-- Animate the icon pulse
+task.spawn(function()
+	while true do
+		local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+			ImageTransparency = 0.3,
+			Size = UDim2.new(0, 42, 0, 42),
+			Position = UDim2.new(0, 4, 0, 4)
+		})
+		local shrink = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+			ImageTransparency = 0.1,
+			Size = UDim2.new(0, 40, 0, 40),
+			Position = UDim2.new(0, 5, 0, 5)
+		})
+		grow:Play()
+		grow.Completed:Wait()
+		shrink:Play()
+		shrink.Completed:Wait()
+	end
+end)
+
+-- Click to toggle GUI
+toggleFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		if Library and Library.toggled then
+			Library:toggled()
+		end
+	end
+end)
     if UserInputService.TouchEnabled then
         Container.Size = UDim2.new(0.8, 0, 0.85, 0)
     else
@@ -2006,70 +2070,4 @@ discordButton = tab.create_button({
     end
 })
 
-
--- 🌙 Moondiety Toggle Icon
-local player = game.Players.LocalPlayer
-local TweenService = game:GetService("TweenService")
-
--- Create floating toggle icon GUI
-local toggleGui = Instance.new("ScreenGui")
-toggleGui.Name = "MoondietyIconGUI"
-toggleGui.ResetOnSpawn = false
-toggleGui.IgnoreGuiInset = true
-toggleGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-toggleGui.Parent = player:WaitForChild("PlayerGui")
-
-local toggleFrame = Instance.new("Frame")
-toggleFrame.Size = UDim2.new(0, 50, 0, 50)
-toggleFrame.Position = UDim2.new(0, 20, 1, -70)
-toggleFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-toggleFrame.BorderSizePixel = 0
-toggleFrame.Active = true
-toggleFrame.Draggable = true
-toggleFrame.Parent = toggleGui
-
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(1, 0)
-frameCorner.Parent = toggleFrame
-
-local icon = Instance.new("ImageLabel")
-icon.Size = UDim2.new(0, 40, 0, 40)
-icon.Position = UDim2.new(0, 5, 0, 5)
-icon.BackgroundTransparency = 1
-icon.Image = "rbxassetid://133495621202705"
-icon.ZIndex = 2
-icon.Parent = toggleFrame
-
-local iconCorner = Instance.new("UICorner")
-iconCorner.CornerRadius = UDim.new(1, 0)
-iconCorner.Parent = icon
-
--- Animate the icon pulse
-task.spawn(function()
-	while true do
-		local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-			ImageTransparency = 0.3,
-			Size = UDim2.new(0, 42, 0, 42),
-			Position = UDim2.new(0, 4, 0, 4)
-		})
-		local shrink = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-			ImageTransparency = 0.1,
-			Size = UDim2.new(0, 40, 0, 40),
-			Position = UDim2.new(0, 5, 0, 5)
-		})
-		grow:Play()
-		grow.Completed:Wait()
-		shrink:Play()
-		shrink.Completed:Wait()
-	end
-end)
-
--- Click to toggle GUI
-toggleFrame.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		if Library and Library.toggled then
-			Library:toggled()
-		end
-	end
-end)
 return library
