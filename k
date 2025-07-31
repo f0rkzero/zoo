@@ -1609,8 +1609,10 @@ iconCorner.CornerRadius = UDim.new(1, 0)
 iconCorner.Parent = icon
 
 -- Connect to library visibility
-frame.MouseButton1Down:Connect(function()
-    Library.visible(main)
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        Library.visible(main)
+    end
 end)
 
 local function animateIcon()
@@ -1635,8 +1637,11 @@ end
 task.spawn(animateIcon)
 
 -- Connect the toggle icon to the library visibility
-frame.MouseButton1Down:Connect(function()
-    Library.visible(main)
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        Library.visible(main)
+    end
 end)
+
 
 return library
