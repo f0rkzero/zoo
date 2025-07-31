@@ -1,12 +1,10 @@
-  local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 local t = tick()
-while gui:FindFirstChild("DetailTextLabel", true) and tick() - t < 30 do 
-    task.wait() 
-end
+while gui:FindFirstChild("DetailTextLabel", true) and tick() - t < 30 do task.wait() end
 if gui:FindFirstChild("DetailTextLabel", true) then
-    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+       game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 end
-getgenv().moon = true
+getgenv().moon=true
 local contain123
 local Hub = "Moondiety"
 local Hub_Script_ID = "04fac618b04f3d64a37bb729a758853f"
@@ -16,7 +14,7 @@ local Linkvertise_Enabled = true
 local Linkvertise_Link = "https://ads.luarmor.net/get_key?for=Key-IHeAAOKIUTol"
 local Lootlabs_Enabled = true
 local Lootlabs_Link = "https://ads.luarmor.net/get_key?for=Key-LWGKRDAaXqFl"
-
+-------------------------------------------
 makefolder(Hub)
 local key_path = Hub .. "/Key.txt"
 script_key = script_key or isfile(key_path) and readfile(key_path) or nil
@@ -123,7 +121,7 @@ Library.clear()
 function Library:open()
     self.Container.Visible = true
     self.Shadow.Visible = true
-    local containerSize, shadowSize
+    local containerSize
     if UserInputService.TouchEnabled then
         containerSize = UDim2.new(0.8, 0, 0.85, 0)
     else
@@ -133,7 +131,7 @@ function Library:open()
         Size = containerSize
     }):Play()
     TweenService:Create(self.Shadow, TweenInfo.new(0.6, Enum.EasingStyle.Circular, Enum.EasingDirection.InOut), {
-        Size = shadowSize
+        Size = containerSize
     }):Play()
 end
 function Library:close()
@@ -145,9 +143,9 @@ function Library:close()
     })
     main_tween:Play()
     main_tween.Completed:Once(function()
-    self.Container.Visible = false
-    self.Shadow.Visible = false
-end)
+        self.Container.Visible = false
+        self.Shadow.Visible = false
+    end)
 end
 function Library:drag()
     if not Library.drag_position then
@@ -167,10 +165,8 @@ function Library:drag()
 end
 function Library:visible()
     if self.Container.Size == UDim2.new(0, 0, 0, 0) then
-        -- UI is closed, so open it
         self:open()
     else
-        -- UI is open, so close it
         self:close()
     end
 end
@@ -288,7 +284,7 @@ function Library:new()
     UIPadding.PaddingTop = UDim.new(0, 15)
     local tabsCorner = Instance.new("UICorner")
     tabsCorner.Parent = tabs
-    contain123= container
+    contain123 = container
     container.Container.InputBegan:Connect(function(input: InputObject)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             Library.dragging = true
@@ -1176,7 +1172,7 @@ function Module:create_dropdown()
     local BASE_WIDTH = 0.96
     local CLOSED_HEIGHT = 50
     local OPTION_HEIGHT = 23
-    Dropdown.selectedOption = nil -- Ñ  ÐµÐºÑ  Ñ  Ð¸Ð¹ Ð²Ñ  Ð±Ð¾Ñ   
+    Dropdown.selectedOption = nil
     function Dropdown:open()
         open = true
         TweenService:Create(Options, TweenInfo.new(0.4), {
@@ -1215,7 +1211,6 @@ function Module:create_dropdown()
             local new_option = option:Clone()
             new_option.Parent = Options
             new_option.Text = value
-            -- Ð  Ð¾Ð´Ñ  Ð²ÐµÑ  Ð¸Ð²Ð°ÐµÐ¼ Ñ  Ð¾Ð»Ñ  ÐºÐ¾ Ñ  ÐµÐºÑ  Ñ  Ð¸Ð¹ Ð²Ñ  Ð±Ñ  Ð°Ð½Ð½Ñ  Ð¹ option
             if value == self.selectedOption then
                 new_option.TextTransparency = 0
             else
@@ -1244,7 +1239,6 @@ function Module:create_dropdown()
             end)
         end
     end
-    -- Ð  Ð½Ð¸Ñ  Ð¸Ð°Ð»Ð¸Ð·Ð¸Ñ  Ñ  ÐµÐ¼ Ñ   Ð¿Ñ  Ñ  Ñ  Ñ  Ð¼ Ð²Ñ  Ð±Ð¾Ñ  Ð¾Ð¼
     Dropdown.selectedOption = nil
     TextLabel.Text = self.name
     Dropdown.options = self.options
@@ -1335,7 +1329,6 @@ end
     self.flag = options.flag or "input_flag"
     self.section = options.section or "left"
     local section = self.section == "left" and left_section
-    -- ð     Info label encouraging user to do the keysystem
     local InfoLabel = Instance.new("TextLabel")
     InfoLabel.Name = "KeyInfo"
     InfoLabel.Parent = section
@@ -1395,8 +1388,6 @@ end
     local UICorner_2 = Instance.new("UICorner")
     UICorner_2.CornerRadius = UDim.new(0, 4)
     UICorner_2.Parent = TextBox
-    -- Save text to flags on any change
-    -- Ð ÐµÐ°Ð³Ð¸Ñ  Ñ  ÐµÐ¼ Ð½Ð° Ð»Ñ  Ð±Ð¾Ðµ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ Ñ  ÐµÐºÑ  Ñ  Ð°
     TextBox:GetPropertyChangedSignal("Text"):Connect(function()
         Library.Flags[self.flag] = TextBox.Text
         Library.save_flags()
@@ -1500,8 +1491,7 @@ end)
         return Tab
     end
 local main = Library.new()
-local container = Library.core  -- ADD THIS LINE
-contain123 = main.core -- This fixes your checkKey function
+contain123 = main.core  -- CRITICAL LINE ADDED HERE
 local tab = main.create_tab('Key')
 tab:create_input({
     name = "Enter Key",
@@ -1572,11 +1562,6 @@ discordButton = tab.create_button({
     end
 })
 
--- Moondiety Toggle Icon
--- Moondiety Toggle Icon (Mobile-Friendly)
--- Moondiety Toggle Icon (Mobile-Friendly)
--- Moondiety Toggle Icon
-
 -- Moondiety Toggle Icon (Mobile-Friendly)
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -1588,7 +1573,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 50, 0, 50)
-frame.Position = UDim2.new(0.9, -25, 0.9, -25)
+frame.Position = UDim2.new(0.9, -25, 0.9, -25)  -- Bottom-right corner (better for mobile)
 frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 frame.BorderSizePixel = 0
 frame.Active = true
@@ -1596,7 +1581,7 @@ frame.Draggable = true
 frame.Parent = gui
 
 local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(1, 0)
+frameCorner.CornerRadius = UDim.new(1, 0) 
 frameCorner.Parent = frame
 
 local icon = Instance.new("ImageLabel")
@@ -1615,13 +1600,7 @@ iconCorner.Parent = icon
 frame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or 
        input.UserInputType == Enum.UserInputType.Touch then
-        if main and main.Container then
-            if main.Container.Size == UDim2.new(0, 0, 0, 0) then
-                main:open()
-            else
-                main:close()
-            end
-        end
+        Library.visible(main)
     end
 end)
 
@@ -1645,13 +1624,5 @@ local function animateIcon()
 end
 
 task.spawn(animateIcon)
-
--- Connect the toggle icon to the library visibility
-frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        Library.visible(main)
-    end
-end)
-
 
 return library
