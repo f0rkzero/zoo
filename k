@@ -2071,6 +2071,7 @@ discordButton = tab.create_button({
 })
 
 return library
+end
 function Library:toggled()
 	if Library.core then
 		Library.core.Enabled = not Library.core.Enabled
