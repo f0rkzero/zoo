@@ -2006,7 +2006,7 @@ discordButton = tab.create_button({
     end
 })
 
-return library
+
 -- 🌙 Moondiety Toggle Icon
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -2072,3 +2072,4 @@ toggleFrame.InputBegan:Connect(function(input)
 		end
 	end
 end)
+return library
