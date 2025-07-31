@@ -121,7 +121,6 @@ Library.clear()
 function Library:open()
     self.Container.Visible = true
     self.Shadow.Visible = true
-    self.Mobile.Modal = true
     local containerSize, shadowSize
     if UserInputService.TouchEnabled then
         containerSize = UDim2.new(0.8, 0, 0.85, 0)
@@ -144,14 +143,9 @@ function Library:close()
     })
     main_tween:Play()
     main_tween.Completed:Once(function()
-        if Library.enabled then
-            return
-        end
-        if Container then
-        self.Container.Visible = false
-        self.Shadow.Visible = false
-        end
-    end)
+    self.Container.Visible = false
+    self.Shadow.Visible = false
+end)
 end
 function Library:drag()
     if not Library.drag_position then
@@ -170,11 +164,12 @@ function Library:drag()
     }):Play()
 end
 function Library:visible()
-    Library.enabled = not Library.enabled
-    if Library.enabled then
-        Library.open(self)
+    if self.Container.Size == UDim2.new(0, 0, 0, 0) then
+        -- UI is closed, so open it
+        self:open()
     else
-        Library.close(self)
+        -- UI is open, so close it
+        self:close()
     end
 end
 function Library:new()
