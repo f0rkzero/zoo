@@ -1726,7 +1726,7 @@ end
     InfoLabel.BackgroundTransparency = 1
     InfoLabel.Position = UDim2.new(0.02, 0, 0, 0)
     InfoLabel.Size = UDim2.new(0.96, 0, 0, 25)
-    InfoLabel.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.Medium)
+    InfoLabel.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.Bold)
     InfoLabel.Text = "🔑 One step key checkpoint — takes 15 sec to complete!"
     InfoLabel.TextColor3 = Color3.fromRGB(191, 1, 0)
     InfoLabel.TextScaled = true
