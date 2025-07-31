@@ -162,7 +162,7 @@ function Library:open()
 
     local containerSize, shadowSize
     if UserInputService.TouchEnabled then
-        containerSize = UDim2.new(0.7, 0, 0.7, 0)
+        containerSize = UDim2.new(0.8, 0, 0.85, 0)
     else
         containerSize = UDim2.new(0.35, 0, 0.35, 0)
     end
