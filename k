@@ -366,40 +366,41 @@ function Library:new()
 
 -- Create toggle icon
 -- Create Moon toggle icon
+-- Create Moon toggle icon
 local toggleIcon = Instance.new("ImageButton")
 toggleIcon.Name = "MoonToggle"
-toggleIcon.Parent = container
-toggleIcon.AnchorPoint = Vector2.new(1, 1) -- Bottom-right corner
+toggleIcon.Parent = container.Container -- Changed to parent to container's Container
+toggleIcon.AnchorPoint = Vector2.new(1, 1)
 toggleIcon.BackgroundTransparency = 1
-toggleIcon.Position = UDim2.new(0.98, 0, 0.98, 0)
+toggleIcon.Position = UDim2.new(0.95, 0, 0.95, 0) -- Adjusted position
 toggleIcon.Size = UDim2.new(0, 40, 0, 40)
-toggleIcon.Image = "rbxassetid://133495621202705" -- Your moon icon
+toggleIcon.Image = "rbxassetid://133495621202705"
 toggleIcon.ZIndex = 100
 toggleIcon.Active = true
 toggleIcon.Draggable = true
 
--- Add circular background
-local bg = Instance.new("Frame")
-bg.Name = "Background"
-bg.Parent = toggleIcon
-bg.Size = UDim2.new(1, 0, 1, 0)
-bg.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-bg.BackgroundTransparency = 0.5
-bg.ZIndex = toggleIcon.ZIndex - 1
+-- Simple animation on click
+toggleIcon.MouseButton1Down:Connect(function()
+    toggleIcon.Size = UDim2.new(0, 38, 0, 38)
+end)
 
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(1, 0)
-corner.Parent = bg
+toggleIcon.MouseButton1Up:Connect(function()
+    toggleIcon.Size = UDim2.new(0, 40, 0, 40)
+    Library.Enabled = not Library.Enabled
+    if Library.Enabled then
+        Library:open()
+    else
+        Library:close()
+    end
+end)
 
--- Animation function
-local function animateIcon()
+-- Pulse animation in background
+task.spawn(function()
     while true do
-        local grow = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, 42, 0, 42),
+        local grow = TweenService:Create(toggleIcon, TweenInfo.new(1, Enum.EasingStyle.Sine), {
             ImageTransparency = 0.3
         })
-        local shrink = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-            Size = UDim2.new(0, 40, 0, 40),
+        local shrink = TweenService:Create(toggleIcon, TweenInfo.new(1, Enum.EasingStyle.Sine), {
             ImageTransparency = 0.1
         })
         grow:Play()
@@ -407,7 +408,7 @@ local function animateIcon()
         shrink:Play()
         shrink.Completed:Wait()
     end
-end
+end)
 
 -- Start animation in background
 task.spawn(animateIcon)
