@@ -1575,6 +1575,7 @@ discordButton = tab.create_button({
 })
 
 -- Moondiety Toggle Icon
+-- Moondiety Toggle Icon (Mobile-Friendly)
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local gui = Instance.new("ScreenGui")
@@ -1610,7 +1611,8 @@ iconCorner.Parent = icon
 
 -- Connect to library visibility
 frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+       input.UserInputType == Enum.UserInputType.Touch then
         Library.visible(main)
     end
 end)
