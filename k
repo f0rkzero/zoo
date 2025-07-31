@@ -365,28 +365,42 @@ function Library:new()
     -- Remove the old mobile button code and replace with this:
 
 -- Create toggle icon
+-- Create Moon toggle icon
 local toggleIcon = Instance.new("ImageButton")
-toggleIcon.Name = "ToggleIcon"
+toggleIcon.Name = "MoonToggle"
 toggleIcon.Parent = container
-toggleIcon.AnchorPoint = Vector2.new(1, 1)
+toggleIcon.AnchorPoint = Vector2.new(1, 1) -- Bottom-right corner
 toggleIcon.BackgroundTransparency = 1
 toggleIcon.Position = UDim2.new(0.98, 0, 0.98, 0)
 toggleIcon.Size = UDim2.new(0, 40, 0, 40)
-toggleIcon.Image = "rbxassetid://133495621202705" -- Your moon icon ID
-toggleIcon.ZIndex = 10
-
--- Make draggable
+toggleIcon.Image = "rbxassetid://133495621202705" -- Your moon icon
+toggleIcon.ZIndex = 100
 toggleIcon.Active = true
 toggleIcon.Draggable = true
+
+-- Add circular background
+local bg = Instance.new("Frame")
+bg.Name = "Background"
+bg.Parent = toggleIcon
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+bg.BackgroundTransparency = 0.5
+bg.ZIndex = toggleIcon.ZIndex - 1
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0)
+corner.Parent = bg
 
 -- Animation function
 local function animateIcon()
     while true do
         local grow = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, 42, 0, 42)
+            Size = UDim2.new(0, 42, 0, 42),
+            ImageTransparency = 0.3
         })
         local shrink = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-            Size = UDim2.new(0, 40, 0, 40)
+            Size = UDim2.new(0, 40, 0, 40),
+            ImageTransparency = 0.1
         })
         grow:Play()
         grow.Completed:Wait()
@@ -395,12 +409,17 @@ local function animateIcon()
     end
 end
 
--- Start animation
+-- Start animation in background
 task.spawn(animateIcon)
 
--- Connect click to toggle UI
+-- Toggle functionality
 toggleIcon.MouseButton1Click:Connect(function()
-    Library:visible()
+    Library.Enabled = not Library.Enabled
+    if Library.Enabled then
+        Library:open()
+    else
+        Library:close()
+    end
 end)
 
 contain123 = container
