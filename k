@@ -152,7 +152,7 @@ end
 Library.load_flags()
 Library.clear()
 
-
+local Library.Enabled = true
 function Library:open()
     self.Container.Visible = true
     self.Shadow.Visible = true
