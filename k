@@ -265,7 +265,7 @@ function Library:new()
     Container.Position = UDim2.new(0.5, 0, 0.5, 0)
 
     if UserInputService.TouchEnabled then
-        Container.Size = UDim2.new(0.7, 0, 0.7, 0)
+        Container.Size = UDim2.new(0.8, 0, 0.85, 0)
     else
     
         Container.Size = UDim2.new(0.35, 0, 0.35, 0)
