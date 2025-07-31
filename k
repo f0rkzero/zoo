@@ -1,4 +1,4 @@
- local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+  local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 local t = tick()
 while gui:FindFirstChild("DetailTextLabel", true) and tick() - t < 30 do task.wait() end
 if gui:FindFirstChild("DetailTextLabel", true) then
@@ -1503,6 +1503,7 @@ end)
         return Tab
     end
 local main = Library.new()
+contain123 = main.core
 local tab = main.create_tab('Key')
 tab:create_input({
     name = "Enter Key",
@@ -1581,6 +1582,7 @@ gui.Name = "MoondietyIconGUI"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = player:WaitForChild("PlayerGui")
+
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 50, 0, 50)
 frame.Position = UDim2.new(0.5, -25, 0.5, -25)
@@ -1589,9 +1591,11 @@ frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = gui
+
 local frameCorner = Instance.new("UICorner")
 frameCorner.CornerRadius = UDim.new(1, 0) 
 frameCorner.Parent = frame
+
 local icon = Instance.new("ImageLabel")
 icon.Size = UDim2.new(0, 40, 0, 40)
 icon.Position = UDim2.new(0, 5, 0, 5)
@@ -1599,9 +1603,16 @@ icon.BackgroundTransparency = 1
 icon.Image = "rbxassetid://133495621202705"
 icon.ZIndex = 2
 icon.Parent = frame
+
 local iconCorner = Instance.new("UICorner")
 iconCorner.CornerRadius = UDim.new(1, 0)
 iconCorner.Parent = icon
+
+-- Connect to library visibility
+frame.MouseButton1Down:Connect(function()
+    Library.visible(main)
+end)
+
 local function animateIcon()
     while true do
         local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
@@ -1620,10 +1631,11 @@ local function animateIcon()
         shrink.Completed:Wait()
     end
 end
+
 task.spawn(animateIcon)
 
 -- Connect the toggle icon to the library visibility
-frame.MouseButton1Click:Connect(function()
+frame.MouseButton1Down:Connect(function()
     Library.visible(main)
 end)
 
