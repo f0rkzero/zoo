@@ -1,10 +1,12 @@
   local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 local t = tick()
-while gui:FindFirstChild("DetailTextLabel", true) and tick() - t < 30 do task.wait() end
-if gui:FindFirstChild("DetailTextLabel", true) then
-       game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+while gui:FindFirstChild("DetailTextLabel", true) and tick() - t < 30 do 
+    task.wait() 
 end
-getgenv().moon=true
+if gui:FindFirstChild("DetailTextLabel", true) then
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+end
+getgenv().moon = true
 local contain123
 local Hub = "Moondiety"
 local Hub_Script_ID = "04fac618b04f3d64a37bb729a758853f"
@@ -14,7 +16,7 @@ local Linkvertise_Enabled = true
 local Linkvertise_Link = "https://ads.luarmor.net/get_key?for=Key-IHeAAOKIUTol"
 local Lootlabs_Enabled = true
 local Lootlabs_Link = "https://ads.luarmor.net/get_key?for=Key-LWGKRDAaXqFl"
--------------------------------------------
+
 makefolder(Hub)
 local key_path = Hub .. "/Key.txt"
 script_key = script_key or isfile(key_path) and readfile(key_path) or nil
@@ -1574,6 +1576,8 @@ discordButton = tab.create_button({
 -- Moondiety Toggle Icon (Mobile-Friendly)
 -- Moondiety Toggle Icon (Mobile-Friendly)
 -- Moondiety Toggle Icon
+
+-- Moondiety Toggle Icon (Mobile-Friendly)
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local gui = Instance.new("ScreenGui")
@@ -1584,7 +1588,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 50, 0, 50)
-frame.Position = UDim2.new(0.9, -25, 0.9, -25) -- Bottom-right corner
+frame.Position = UDim2.new(0.9, -25, 0.9, -25)
 frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 frame.BorderSizePixel = 0
 frame.Active = true
@@ -1599,7 +1603,7 @@ local icon = Instance.new("ImageLabel")
 icon.Size = UDim2.new(0, 40, 0, 40)
 icon.Position = UDim2.new(0, 5, 0, 5)
 icon.BackgroundTransparency = 1
-icon.Image = "rbxassetid://133495621202705" -- Your icon asset ID
+icon.Image = "rbxassetid://133495621202705"
 icon.ZIndex = 2
 icon.Parent = frame
 
@@ -1611,30 +1615,17 @@ iconCorner.Parent = icon
 frame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or 
        input.UserInputType == Enum.UserInputType.Touch then
-        Library.visible(main) -- Use the corrected visible() function
+        if main and main.Container then
+            if main.Container.Size == UDim2.new(0, 0, 0, 0) then
+                main:open()
+            else
+                main:close()
+            end
+        end
     end
 end)
 
 local function animateIcon()
-    while true do
-        local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-            ImageTransparency = 0.3,
-            Size = UDim2.new(0, 42, 0, 42),
-            Position = UDim2.new(0, 4, 0, 4)
-        })
-        local shrink = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-            ImageTransparency = 0.1,
-            Size = UDim2.new(0, 40, 0, 40),
-            Position = UDim2.new(0, 5, 0, 5)
-        })
-        grow:Play()
-        grow.Completed:Wait()
-        shrink:Play()
-        shrink.Completed:Wait()
-    end
-end
-
-task.spawn(animateIcon)
     while true do
         local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
             ImageTransparency = 0.3,
