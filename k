@@ -1499,7 +1499,7 @@ end)
     end
 local main = Library.new()
 local container = Library.core  -- ADD THIS LINE
-contain123 = container  -- This fixes your checkKey function
+contain123 = main.core -- This fixes your checkKey function
 local tab = main.create_tab('Key')
 tab:create_input({
     name = "Enter Key",
@@ -1573,6 +1573,7 @@ discordButton = tab.create_button({
 -- Moondiety Toggle Icon
 -- Moondiety Toggle Icon (Mobile-Friendly)
 -- Moondiety Toggle Icon (Mobile-Friendly)
+-- Moondiety Toggle Icon
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local gui = Instance.new("ScreenGui")
@@ -1583,7 +1584,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 50, 0, 50)
-frame.Position = UDim2.new(0.9, -25, 0.9, -25)  -- Bottom right corner
+frame.Position = UDim2.new(0.9, -25, 0.9, -25) -- Bottom-right corner
 frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 frame.BorderSizePixel = 0
 frame.Active = true
@@ -1591,14 +1592,14 @@ frame.Draggable = true
 frame.Parent = gui
 
 local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(1, 0) 
+frameCorner.CornerRadius = UDim.new(1, 0)
 frameCorner.Parent = frame
 
 local icon = Instance.new("ImageLabel")
 icon.Size = UDim2.new(0, 40, 0, 40)
 icon.Position = UDim2.new(0, 5, 0, 5)
 icon.BackgroundTransparency = 1
-icon.Image = "rbxassetid://133495621202705"
+icon.Image = "rbxassetid://133495621202705" -- Your icon asset ID
 icon.ZIndex = 2
 icon.Parent = frame
 
@@ -1606,38 +1607,34 @@ local iconCorner = Instance.new("UICorner")
 iconCorner.CornerRadius = UDim.new(1, 0)
 iconCorner.Parent = icon
 
--- Connect to library visibility - THIS IS THE CRITICAL FIX
+-- Connect to library visibility
 frame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or 
        input.UserInputType == Enum.UserInputType.Touch then
-        if container and container.Container then
-            if container.Container.Size == UDim2.new(0, 0, 0, 0) then
-                -- Open the UI
-                container.Container.Visible = true
-                container.Shadow.Visible = true
-                container.Mobile.Modal = true
-                
-                local containerSize = UserInputService.TouchEnabled and UDim2.new(0.8, 0, 0.85, 0) or UDim2.new(0.35, 0, 0.35, 0)
-                TweenService:Create(container.Container, TweenInfo.new(0.6, Enum.EasingStyle.Circular, Enum.EasingDirection.InOut), {
-                    Size = containerSize
-                }):Play()
-                TweenService:Create(container.Shadow, TweenInfo.new(0.6, Enum.EasingStyle.Circular, Enum.EasingDirection.InOut), {
-                    Size = containerSize
-                }):Play()
-            else
-                -- Close the UI
-                TweenService:Create(container.Shadow, TweenInfo.new(0.6, Enum.EasingStyle.Circular, Enum.EasingDirection.InOut), {
-                    Size = UDim2.new(0, 0, 0, 0)
-                }):Play()
-                TweenService:Create(container.Container, TweenInfo.new(0.6, Enum.EasingStyle.Circular, Enum.EasingDirection.InOut), {
-                    Size = UDim2.new(0, 0, 0, 0)
-                }):Play()
-            end
-        end
+        Library.visible(main) -- Use the corrected visible() function
     end
 end)
 
 local function animateIcon()
+    while true do
+        local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+            ImageTransparency = 0.3,
+            Size = UDim2.new(0, 42, 0, 42),
+            Position = UDim2.new(0, 4, 0, 4)
+        })
+        local shrink = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+            ImageTransparency = 0.1,
+            Size = UDim2.new(0, 40, 0, 40),
+            Position = UDim2.new(0, 5, 0, 5)
+        })
+        grow:Play()
+        grow.Completed:Wait()
+        shrink:Play()
+        shrink.Completed:Wait()
+    end
+end
+
+task.spawn(animateIcon)
     while true do
         local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
             ImageTransparency = 0.3,
