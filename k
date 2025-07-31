@@ -126,11 +126,9 @@ end
 
 function Library:clear()
     for _, object in CoreGui:GetChildren() do
-        if object.Name ~= "cac" then
-            continue
+        if object.Name == "cac" or object.Name == "MoondietyIconGUI" then
+            object:Destroy()
         end
-    
-        object:Destroy()
     end
 end
 
@@ -263,71 +261,7 @@ function Library:new()
     Container.BorderSizePixel = 0
     Container.ClipsDescendants = true
     Container.Position = UDim2.new(0.5, 0, 0.5, 0)
--- 🌙 Moondiety Toggle Icon
-local player = game.Players.LocalPlayer
-local TweenService = game:GetService("TweenService")
 
--- Create floating toggle icon GUI
-local toggleGui = Instance.new("ScreenGui")
-toggleGui.Name = "MoondietyIconGUI"
-toggleGui.ResetOnSpawn = false
-toggleGui.IgnoreGuiInset = true
-toggleGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-toggleGui.Parent = player:WaitForChild("PlayerGui")
-
-local toggleFrame = Instance.new("Frame")
-toggleFrame.Size = UDim2.new(0, 50, 0, 50)
-toggleFrame.Position = UDim2.new(0, 20, 1, -70)
-toggleFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-toggleFrame.BorderSizePixel = 0
-toggleFrame.Active = true
-toggleFrame.Draggable = true
-toggleFrame.Parent = toggleGui
-
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(1, 0)
-frameCorner.Parent = toggleFrame
-
-local icon = Instance.new("ImageLabel")
-icon.Size = UDim2.new(0, 40, 0, 40)
-icon.Position = UDim2.new(0, 5, 0, 5)
-icon.BackgroundTransparency = 1
-icon.Image = "rbxassetid://133495621202705"
-icon.ZIndex = 2
-icon.Parent = toggleFrame
-
-local iconCorner = Instance.new("UICorner")
-iconCorner.CornerRadius = UDim.new(1, 0)
-iconCorner.Parent = icon
-
--- Animate the icon pulse
-task.spawn(function()
-	while true do
-		local grow = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-			ImageTransparency = 0.3,
-			Size = UDim2.new(0, 42, 0, 42),
-			Position = UDim2.new(0, 4, 0, 4)
-		})
-		local shrink = TweenService:Create(icon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-			ImageTransparency = 0.1,
-			Size = UDim2.new(0, 40, 0, 40),
-			Position = UDim2.new(0, 5, 0, 5)
-		})
-		grow:Play()
-		grow.Completed:Wait()
-		shrink:Play()
-		shrink.Completed:Wait()
-	end
-end)
-
--- Click to toggle GUI
-toggleFrame.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		if Library and Library.toggled then
-			Library:toggled()
-		end
-	end
-end)
     if UserInputService.TouchEnabled then
         Container.Size = UDim2.new(0.8, 0, 0.85, 0)
     else
@@ -428,69 +362,48 @@ end)
     local tabsCorner = Instance.new("UICorner")
     tabsCorner.Parent = tabs
 
-    local mobile_button = Instance.new("TextButton")
-    mobile_button.Name = "Mobile"
-    mobile_button.BackgroundColor3 = Color3.fromRGB(27, 28, 33)
-    mobile_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    mobile_button.BorderSizePixel = 0
-    mobile_button.Position = UDim2.new(0.0210955422, 0, 0.91790241, 0)
-    mobile_button.Size = UDim2.new(0, 122, 0, 38)
-    mobile_button.AutoButtonColor = false
-    mobile_button.Modal = true
-    mobile_button.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold)
-    mobile_button.Text = ""
-    mobile_button.TextColor3 = Color3.fromRGB(0, 0, 0)
-    mobile_button.TextSize = 14.000
-    mobile_button.Parent = container
+    -- Remove the old mobile button code and replace with this:
 
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 13)
-    UICorner.Parent = mobile_button
+-- Create toggle icon
+local toggleIcon = Instance.new("ImageButton")
+toggleIcon.Name = "ToggleIcon"
+toggleIcon.Parent = container
+toggleIcon.AnchorPoint = Vector2.new(1, 1)
+toggleIcon.BackgroundTransparency = 1
+toggleIcon.Position = UDim2.new(0.98, 0, 0.98, 0)
+toggleIcon.Size = UDim2.new(0, 40, 0, 40)
+toggleIcon.Image = "rbxassetid://133495621202705" -- Your moon icon ID
+toggleIcon.ZIndex = 10
 
-    local shadowMobile = Instance.new("ImageLabel")
-    shadowMobile.Name = "Shadow"
-    shadowMobile.Parent = mobile_button
-    shadowMobile.AnchorPoint = Vector2.new(0.5, 0.5)
-    shadowMobile.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    shadowMobile.BackgroundTransparency = 1.000
-    shadowMobile.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    shadowMobile.BorderSizePixel = 0
-    shadowMobile.Position = UDim2.new(0.5, 0, 0.5, 0)
-    shadowMobile.Size = UDim2.new(0, 144, 0, 58)
-    shadowMobile.ZIndex = 0
-    shadowMobile.Image = "rbxassetid://17183270335"
-    shadowMobile.ImageTransparency = 0.200
+-- Make draggable
+toggleIcon.Active = true
+toggleIcon.Draggable = true
 
-    local State = Instance.new("TextLabel")
-    State.Name = "State"
-    State.Parent = mobile_button
-    State.AnchorPoint = Vector2.new(0.5, 0.5)
-    State.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    State.BackgroundTransparency = 1.000
-    State.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    State.BorderSizePixel = 0
-    State.Position = UDim2.new(0.646000028, 0, 0.5, 0)
-    State.Size = UDim2.new(0, 64, 0, 15)
-    State.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold)
-    State.Text = "Open"
-    State.TextColor3 = Color3.fromRGB(255, 255, 255)
-    State.TextScaled = true
-    State.TextSize = 14.000
-    State.TextWrapped = true
-    State.TextXAlignment = Enum.TextXAlignment.Left
+-- Animation function
+local function animateIcon()
+    while true do
+        local grow = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 42, 0, 42)
+        })
+        local shrink = TweenService:Create(toggleIcon, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 40, 0, 40)
+        })
+        grow:Play()
+        grow.Completed:Wait()
+        shrink:Play()
+        shrink.Completed:Wait()
+    end
+end
 
-    local Icon = Instance.new("ImageLabel")
-    Icon.Name = "Icon"
-    Icon.Parent = mobile_button
-    Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-    Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Icon.BackgroundTransparency = 1.000
-    Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Icon.BorderSizePixel = 0
-    Icon.Position = UDim2.new(0.268000007, 0, 0.5, 0)
-    Icon.Size = UDim2.new(0, 15, 0, 15)
-    Icon.Image = "rbxassetid://17183279677"
-    contain123= container
+-- Start animation
+task.spawn(animateIcon)
+
+-- Connect click to toggle UI
+toggleIcon.MouseButton1Click:Connect(function()
+    Library:visible()
+end)
+
+contain123 = container
   
     container.Container.InputBegan:Connect(function(input: InputObject)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -530,9 +443,7 @@ UserInputService.InputBegan:Connect(function(input, process)
 end)
 
 
-    mobile_button.MouseButton1Click:Connect(function()
-        Library.visible(container)
-    end)
+    
 
     local Tab = {}
 
@@ -1587,7 +1498,7 @@ function Module:create_dropdown()
     local CLOSED_HEIGHT = 50
     local OPTION_HEIGHT = 23
 
-    Dropdown.selectedOption = nil -- текущий выбор
+    Dropdown.selectedOption = nil -- Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€
 
     function Dropdown:open()
         open = true
@@ -1639,7 +1550,7 @@ function Module:create_dropdown()
             new_option.Parent = Options
             new_option.Text = value
 
-            -- Подсвечиваем только текущий выбранный option
+            -- ÐŸÐ¾Ð´ÑÐ²ÐµÑ‡Ð¸Ð²Ð°ÐµÐ¼ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ñ‹Ð¹ option
             if value == self.selectedOption then
                 new_option.TextTransparency = 0
             else
@@ -1672,7 +1583,7 @@ function Module:create_dropdown()
         end
     end
 
-    -- Инициализируем с пустым выбором
+    -- Ð˜Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð¸Ñ€ÑƒÐµÐ¼ Ñ Ð¿ÑƒÑÑ‚Ñ‹Ð¼ Ð²Ñ‹Ð±Ð¾Ñ€Ð¾Ð¼
     Dropdown.selectedOption = nil
     TextLabel.Text = self.name
 
@@ -1783,7 +1694,7 @@ end
 
     local section = self.section == "left" and left_section
 
-    -- 🔑 Info label encouraging user to do the keysystem
+    -- ðŸ”‘ Info label encouraging user to do the keysystem
     local InfoLabel = Instance.new("TextLabel")
     InfoLabel.Name = "KeyInfo"
     InfoLabel.Parent = section
@@ -1791,7 +1702,7 @@ end
     InfoLabel.Position = UDim2.new(0.02, 0, 0, 0)
     InfoLabel.Size = UDim2.new(0.96, 0, 0, 25)
     InfoLabel.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.Bold)
-    InfoLabel.Text = "🔑 One step key checkpoint — takes 15 sec to complete!"
+    InfoLabel.Text = "ðŸ”‘ One step key checkpoint â€” takes 15 sec to complete!"
     InfoLabel.TextColor3 = Color3.fromRGB(191, 1, 0)
     InfoLabel.TextScaled = true
     InfoLabel.TextWrapped = true
@@ -1852,7 +1763,7 @@ end
     -- Save text to flags on any change
    
 
-    -- Реагируем на любое изменение текста
+    -- Ð ÐµÐ°Ð³Ð¸Ñ€ÑƒÐµÐ¼ Ð½Ð° Ð»ÑŽÐ±Ð¾Ðµ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ Ñ‚ÐµÐºÑÑ‚Ð°
     TextBox:GetPropertyChangedSignal("Text"):Connect(function()
         Library.Flags[self.flag] = TextBox.Text
         Library.save_flags()
@@ -2070,14 +1981,4 @@ discordButton = tab.create_button({
     end
 })
 
-return Library
-end
-
-function Library:toggled()
-	if Library.core then
-		Library.core.Enabled = not Library.core.Enabled
-	end
-end
-
-Library:new()
-
+return library
